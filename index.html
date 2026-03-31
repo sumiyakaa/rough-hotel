@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOTEL EXAMPLE — A Quiet Luxury Stay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@200;300;400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ========== RESET ========== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    /* ========== BASE ========== */
+    body {
+      background: #0a0a0a;
+      color: #e8e4df;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+    }
+
+    /* ========== TYPOGRAPHY ========== */
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .font-sans-en { font-family: 'Inter', sans-serif; }
+
+    /* ========== UTILITY ========== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+    .fade-in.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      color: #fff;
+      text-decoration: none;
+    }
+    nav a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      margin-left: 36px;
+      transition: opacity 0.3s;
+    }
+    nav a:hover { opacity: 0.5; }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+    .hero-content {
+      position: absolute;
+      bottom: 12%;
+      left: 48px;
+    }
+    .hero-content h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .hero-content p {
+      font-size: 0.8rem;
+      font-weight: 200;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.7);
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .scroll-indicator span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.3);
+      animation: scrollLine 2s ease infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ========== SECTION COMMON ========== */
+    section {
+      padding: 140px 48px;
+    }
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(232,228,223,0.35);
+      margin-bottom: 48px;
+    }
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .section-text {
+      font-size: 0.85rem;
+      font-weight: 200;
+      line-height: 2.2;
+      color: rgba(232,228,223,0.7);
+      max-width: 560px;
+    }
+
+    /* ========== CONCEPT ========== */
+    .concept {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 180px 48px;
+    }
+    .concept-image {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+    }
+    .concept-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s ease;
+    }
+    .concept-image:hover img {
+      transform: scale(1.03);
+    }
+    .concept-text {
+      padding-left: 40px;
+    }
+
+    /* ========== ROOMS ========== */
+    .rooms {
+      padding: 180px 48px;
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 80px;
+    }
+    .room-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .room-card img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      transition: transform 4s ease;
+    }
+    .room-card:hover img {
+      transform: scale(1.04);
+    }
+    .room-info {
+      margin-top: 20px;
+    }
+    .room-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .room-info p {
+      font-size: 0.75rem;
+      font-weight: 200;
+      color: rgba(232,228,223,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    /* ========== EXPERIENCE ========== */
+    .experience {
+      padding: 180px 48px;
+    }
+    .experience-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      margin-top: 80px;
+      align-items: end;
+    }
+    .experience-grid .exp-item img {
+      width: 100%;
+      object-fit: cover;
+      transition: transform 4s ease;
+    }
+    .experience-grid .exp-item:first-child img {
+      aspect-ratio: 16 / 10;
+    }
+    .experience-grid .exp-item:last-child img {
+      aspect-ratio: 3 / 4;
+    }
+    .experience-grid .exp-item:hover img {
+      transform: scale(1.03);
+    }
+    .exp-item-text {
+      margin-top: 20px;
+    }
+    .exp-item-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .exp-item-text p {
+      font-size: 0.75rem;
+      font-weight: 200;
+      color: rgba(232,228,223,0.5);
+    }
+
+    /* ========== ACCESS ========== */
+    .access {
+      padding: 180px 48px;
+      border-top: 1px solid rgba(232,228,223,0.08);
+    }
+    .access-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-top: 60px;
+    }
+    .access-info dl {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px 24px;
+    }
+    .access-info dt {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(232,228,223,0.4);
+    }
+    .access-info dd {
+      font-size: 0.82rem;
+      font-weight: 200;
+      color: rgba(232,228,223,0.7);
+    }
+    .access-map {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: rgba(232,228,223,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(232,228,223,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== RESERVATION ========== */
+    .reservation {
+      padding: 200px 48px;
+      text-align: center;
+      border-top: 1px solid rgba(232,228,223,0.08);
+    }
+    .reservation .section-heading {
+      margin-bottom: 24px;
+    }
+    .reservation .section-text {
+      max-width: 480px;
+      margin: 0 auto 60px;
+    }
+    .cta-button {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #0a0a0a;
+      background: #e8e4df;
+      padding: 18px 56px;
+      text-decoration: none;
+      transition: background 0.4s, color 0.4s;
+    }
+    .cta-button:hover {
+      background: #c4bfb8;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      padding: 60px 48px;
+      border-top: 1px solid rgba(232,228,223,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: rgba(232,228,223,0.4);
+    }
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(232,228,223,0.2);
+    }
+    .footer-credit {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(232,228,223,0.15);
+    }
+
+    /* ========== SP ========== */
+    @media (max-width: 768px) {
+      header { padding: 20px 24px; }
+      nav { display: none; }
+      section { padding: 100px 24px; }
+      .hero-content { left: 24px; bottom: 15%; }
+      .concept { grid-template-columns: 1fr; gap: 48px; padding: 120px 24px; }
+      .concept-text { padding-left: 0; }
+      .rooms { padding: 120px 24px; }
+      .rooms-grid { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
+      .experience { padding: 120px 24px; }
+      .experience-grid { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
+      .experience-grid .exp-item:last-child img { aspect-ratio: 16 / 10; }
+      .access { padding: 120px 24px; }
+      .access-content { grid-template-columns: 1fr; gap: 48px; }
+      .reservation { padding: 140px 24px; }
+      footer { padding: 40px 24px; flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="logo">HOTEL EXAMPLE</a>
+    <nav>
+      <a href="#concept">Concept</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#experience">Experience</a>
+      <a href="#access">Access</a>
+      <a href="#reservation">Reservation</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="images/hero.jpg" alt="Hotel exterior at night">
+    <div class="hero-content">
+      <h1 class="font-serif">A Quiet Place<br>to Simply Be.</h1>
+      <p>日常から離れ、静かに過ごす場所。</p>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- CONCEPT -->
+  <section class="concept" id="concept">
+    <div class="concept-image fade-in">
+      <img src="images/concept.jpg" alt="Hotel lounge interior">
+    </div>
+    <div class="concept-text fade-in">
+      <p class="section-label">Concept</p>
+      <h2 class="section-heading font-serif">ここにしかない<br>時間を過ごす。</h2>
+      <p class="section-text">
+        私たちが大切にしているのは、「何もしない」という贅沢。<br><br>
+        街の喧騒から離れ、穏やかな光と静寂に包まれる空間で、
+        ただ自分のために時間を使う。<br><br>
+        建築、インテリア、料理、サービスのすべてが、
+        ゲストの心地よい滞在のためにデザインされています。
+      </p>
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="rooms" id="rooms">
+    <p class="section-label fade-in">Rooms</p>
+    <h2 class="section-heading font-serif fade-in">心地よさの設計。</h2>
+    <p class="section-text fade-in">全室、自然光と上質な素材に満ちた空間。<br>窓の向こうに広がる景色とともに、穏やかな時間をお過ごしください。</p>
+
+    <div class="rooms-grid">
+      <div class="room-card fade-in">
+        <img src="images/room-standard.jpg" alt="Standard Room">
+        <div class="room-info">
+          <h3 class="font-serif">Standard</h3>
+          <p>32㎡ — ゆとりある空間と上質なリネン</p>
+        </div>
+      </div>
+      <div class="room-card fade-in">
+        <img src="images/room-suite.jpg" alt="Suite Room">
+        <div class="room-info">
+          <h3 class="font-serif">Suite</h3>
+          <p>58㎡ — リビング付きの特別な滞在</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience" id="experience">
+    <p class="section-label fade-in">Experience</p>
+    <h2 class="section-heading font-serif fade-in">過ごし方を、選ぶ。</h2>
+    <p class="section-text fade-in">バーで静かにグラスを傾ける夜も、<br>周辺を散策する朝のひとときも。</p>
+
+    <div class="experience-grid">
+      <div class="exp-item fade-in">
+        <img src="images/experience-bar.jpg" alt="Hotel bar">
+        <div class="exp-item-text">
+          <h3 class="font-serif">Bar & Lounge</h3>
+          <p>厳選された酒と静かな空間</p>
+        </div>
+      </div>
+      <div class="exp-item fade-in">
+        <img src="images/experience-nature.jpg" alt="Surrounding nature">
+        <div class="exp-item-text">
+          <h3 class="font-serif">Around the Hotel</h3>
+          <p>四季折々の自然と文化に触れる散策</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESS -->
+  <section class="access" id="access">
+    <p class="section-label fade-in">Access</p>
+    <h2 class="section-heading font-serif fade-in">アクセス</h2>
+
+    <div class="access-content fade-in">
+      <div class="access-info">
+        <dl>
+          <dt>Address</dt>
+          <dd>〒000-0000<br>東京都渋谷区○○ 0-0-0</dd>
+          <dt>Train</dt>
+          <dd>○○駅より徒歩5分</dd>
+          <dt>Phone</dt>
+          <dd>03-0000-0000</dd>
+          <dt>Check-in</dt>
+          <dd>15:00 — 22:00</dd>
+          <dt>Check-out</dt>
+          <dd>— 11:00</dd>
+        </dl>
+      </div>
+      <div class="access-map">
+        Google Maps Embed Area
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATION -->
+  <section class="reservation" id="reservation">
+    <p class="section-label fade-in">Reservation</p>
+    <h2 class="section-heading font-serif fade-in">ご予約</h2>
+    <p class="section-text fade-in">
+      お電話またはオンラインにて承っております。<br>
+      ご不明な点がございましたら、お気軽にお問い合わせください。
+    </p>
+    <a href="#" class="cta-button fade-in">Reserve Now</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo font-serif">HOTEL EXAMPLE</span>
+    <span class="footer-credit">Designed by AKASHIKI</span>
+    <span class="footer-copy">&copy; 2026 HOTEL EXAMPLE. All rights reserved.</span>
+  </footer>
+
+  <!-- SCROLL ANIMATION -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
